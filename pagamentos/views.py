@@ -22,3 +22,22 @@ class ProcessarPagamento(FormView):
         ctx = super().get_context_data(**kwargs)
         ctx['braintree_client_token'] = self.braintree_client_token
         return ctx
+
+    def form_valid(self, form):
+        idpedido = self.request.session.get('idpedido')
+        pedido = Pedido.objects.get(id=idpedido)
+        custo_total = pedido.get_total()
+        result = braintree.Transaction.sale({
+            'amount': custo_total,
+            'payment_method_nonce': form.cleaned_data['payment_method_nonce'],
+            'options': {
+                'submit_for_settlement': True,
+
+            }
+        })
+        if result.is_success:
+            context = self.get_context_data()
+            context['form'] = self.get_form(self.get_form())
+            context['braintree_error'] = 'Pagamento não processado. Favor verificar os dados'
+            return self.render_to_response(context)
+        return super().form_valid(form)
