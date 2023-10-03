@@ -39,5 +39,14 @@ class ProcessarPagamento(FormView):
             context = self.get_context_data()
             context['form'] = self.get_form(self.get_form())
             context['braintree_error'] = 'Pagamento não processado. Favor verificar os dados'
-            return self.render_to_response(context)
+        #    return self.render_to_response(context)
         return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('pagamento:realizado')
+
+class PagamentoRealizadoView(TemplateView):
+    template_name = 'pagamento/realizado.html'
+
+class PagamentoCanceladoView(TemplateView):
+    template_name = 'pagamento/cancelado.html'

@@ -146,9 +146,12 @@ BRAINTREE_PRIVATE_KEY=env('BRAINTREE_PRIVATE_KEY')
 BRAINTREE_MERCHANT_ID=env('BRAINTREE_MERCHANT_ID')
 
 
-EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND ='django.core.mail.backends.console.EmailBackend'
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
 EMAIL_HOST='smtp.outlook.com'
-EMAIL_PORT =587
+EMAIL_PORT = 587
 EMAIL_USE_TLS =True
+EMAIL_USE_SSL = False
 EMAIL_HOST_USER =env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD =env('EMAIL_HOST_PASSWORD')
